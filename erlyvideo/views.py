@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 
 from erlyvideo.conf.settings import ERLYVIDEO_PUBLISH_AUTH_FUNC, ERLYVIDEO_PLAY_AUTH_FUNC
+from erlyvideo.decorators import test_access
 from erlyvideo.models import ErlyVideoEvent
 from erlyvideo.signals import server_event, publish_auth, play_auth
 
@@ -23,6 +24,7 @@ def play_auth_sample(ip, file, user_id, session_id):
 
 
 @csrf_exempt
+@test_access
 def event_handlers(request):
     logger.debug("%s" % request.POST)
 
@@ -35,6 +37,7 @@ def event_handlers(request):
 
 
 @csrf_exempt
+@test_access
 def publish_auth(request):
     """
     Авторизация при побликации потока
@@ -49,6 +52,7 @@ def publish_auth(request):
 
 
 @csrf_exempt
+@test_access
 def play_auth(request):
     """
     Авторизация при проигрывании потока
