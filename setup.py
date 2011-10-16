@@ -8,7 +8,7 @@ from erlyvideo import get_version
 setup(
     name='django-erlyvideo',
     version=get_version().replace(' ', '-'),
-    description=u'Private messages',
+    description=u'Erlyvideo',
     license="BSD License",
     author='Aleksandr Zorin (plazix)',
     author_email='plazix@gmail.com',
