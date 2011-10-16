@@ -16,7 +16,7 @@ README
 
 ERLYVIDEO\_PUBLISH\_AUTH\_FUNC - строка с путем к функции проверяющей права пользователя на публикацию потока, по умолчанию - разрешено. 
 
-    def public\_auth\_sample(ip, file, user\_id, session\_id):
+    def public_auth_sample(ip, file, user_id, session_id):
         """
         Пример функции проверки разрешено ли пользователю публиковать поток
         
@@ -30,7 +30,7 @@ ERLYVIDEO\_PUBLISH\_AUTH\_FUNC - строка с путем к функции п
         
 ERLYVIDEO\_PLAY\_AUTH\_FUNC - строка с путем к функции проверяющей права пользователя на просмотр потока, по умолчанию - разрешено. 
 
-    def play\_auth\_sample(ip, file, user\_id, session\_id):
+    def play_auth_sample(ip, file, user_id, session_id):
         """
         Пример функции проверки разрешено ли пользователю просматривать поток
 
