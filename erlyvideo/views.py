@@ -13,14 +13,34 @@ from erlyvideo.models import ErlyVideoEvent
 from erlyvideo.signals import server_event, publish_auth as _publish_auth, play_auth as _play_auth
 
 
+__docformat__ = "restructuredtext"
+
 logger = logging.getLogger('erlyvideo')
 
 
 def public_auth_sample(ip, file, user_id, session_id):
+    """
+    Пример функции проверки разрешено ли пользователю публиковать поток
+
+    :param ip: IP адресс пользователя публикующего поток
+    :param file: имя потока
+    :param user_id: ID пользователя переданного в данных сессии
+    :param session_id: ID сессии
+    :return: True - разрешено, False - запрещено
+    """
     return True
 
 
 def play_auth_sample(ip, file, user_id, session_id):
+    """
+    Пример функции проверки разрешено ли пользователю просматривать поток
+
+    :param ip: IP адресс пользователя просматривающего поток
+    :param file: имя потока
+    :param user_id: ID пользователя переданного в данных сессии
+    :param session_id: ID сессии
+    :return: True - разрешено, False - запрещено
+    """
     return True
 
 
