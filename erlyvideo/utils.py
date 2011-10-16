@@ -16,7 +16,7 @@ def get_session_string(user, additional_data={}):
     """
     Формирует строку с данными сессии для erlyvideo
 
-    :param request: ``django.contrib.auth.models.User``
+    :param user: ``django.contrib.auth.models.User``
     :param additional_data: дополнительные данные, которые необходимо передать erlyvideo
     :return: строка с данными сессии
     """

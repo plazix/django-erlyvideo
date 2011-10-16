@@ -9,7 +9,13 @@ README
     
 И добавте папку django-erlyvideo/erlyvideo в ваш PYTHONPATH.
 
-Добавте erlyvideo в INSTALLED_APPS вашего проекта.
+Добавте erlyvideo в INSTALLED_APPS вашего проекта и обновите urlpatterns
+
+    urlpatterns = patterns('',
+        ...
+        url(r'^erlyvideo/', include('erlyvideo.urls')),
+        ...
+    )
 
 Настройки
 ======
