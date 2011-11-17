@@ -2,25 +2,10 @@
 
 .idea/
 
-nbproject/
-nbactions.xml
-
 ### files ###
 
-*.log
 *.py[co]
-
-conf/*.conf
-conf/*.xml
-
-settings/development.py
-settings/production.py
 
 ### directories ###
 
-media/cache/*
-media/storage/*
-media/vendors/*
-
-var/*
-vendors/*
+examples/*

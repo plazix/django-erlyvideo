@@ -7,13 +7,13 @@ README
     
     git clone git://github.com/plazix/django-erlyvideo.git django-erlyvideo
     
-И добавте папку django-erlyvideo/erlyvideo в ваш PYTHONPATH.
+И добавте папку django-erlyvideo/djerlyvideo в ваш PYTHONPATH.
 
 Добавте erlyvideo в INSTALLED_APPS вашего проекта и обновите urlpatterns
 
     urlpatterns = patterns('',
         ...
-        url(r'^erlyvideo/', include('erlyvideo.urls')),
+        url(r'^erlyvideo/', include('djerlyvideo.urls')),
         ...
     )
 
@@ -22,10 +22,11 @@ README
 
 ERLYVIDEO\_PUBLISH\_AUTH\_FUNC - строка с путем к функции проверяющей права пользователя на публикацию потока, по умолчанию - разрешено. 
 
-    def public_auth_sample(ip, file, user_id, session_id):
+    def public_auth_sample(server, ip, file, user_id, session_id):
         """
         Пример функции проверки разрешено ли пользователю публиковать поток
-        
+
+        :param server: сервер ``djerlyvideo.models.Server`` отправивший запрос
         :param ip: IP адресс пользователя публикующего поток
         :param file: имя потока
         :param user_id: ID пользователя переданного в данных сессии
@@ -36,10 +37,11 @@ ERLYVIDEO\_PUBLISH\_AUTH\_FUNC - строка с путем к функции п
         
 ERLYVIDEO\_PLAY\_AUTH\_FUNC - строка с путем к функции проверяющей права пользователя на просмотр потока, по умолчанию - разрешено. 
 
-    def play_auth_sample(ip, file, user_id, session_id):
+    def play_auth_sample(server, ip, file, user_id, session_id):
         """
         Пример функции проверки разрешено ли пользователю просматривать поток
 
+        :param server: сервер ``djerlyvideo.models.Server`` отправивший запрос
         :param ip: IP адресс пользователя просматривающего поток
         :param file: имя потока
         :param user_id: ID пользователя переданного в данных сессии

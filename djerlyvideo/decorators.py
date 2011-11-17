@@ -4,7 +4,7 @@ import functools
 
 from django.http import HttpResponseForbidden
 
-from erlyvideo.conf.settings import ERLYVIDEO_ACCESS_IPS
+from djerlyvideo.conf.settings import ERLYVIDEO_ACCESS_IPS
 
 
 def test_access(f):

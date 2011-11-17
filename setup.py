@@ -2,17 +2,17 @@
 
 from setuptools import setup, find_packages
 
-from erlyvideo import get_version
+from djerlyvideo import get_version
 
 
 setup(
     name='django-erlyvideo',
     version=get_version().replace(' ', '-'),
-    description=u'Erlyvideo',
+    description='Django application for working with erlyvideo',
     license="BSD License",
     author='Aleksandr Zorin (plazix)',
     author_email='plazix@gmail.com',
-    url='https://github.com/plazix/django-erlyvideo',
+    url='https://github.com/plazixcom/django-erlyvideo',
     download_url='',
     packages=find_packages(),
     include_package_data=True,

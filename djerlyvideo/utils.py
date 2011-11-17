@@ -6,7 +6,8 @@ import hmac
 
 from django.utils import simplejson
 
-from erlyvideo.conf.settings import ERLYVIDEO_SECRET_KEY
+from djerlyvideo.conf.settings import ERLYVIDEO_SECRET_KEY
+from djerlyvideo.models import Server
 
 
 __docformat__ = "restructuredtext"
@@ -28,3 +29,7 @@ def get_session_string(user, additional_data={}):
     session_base64 = base64.b64encode(simplejson.dumps(session))
     session_signature = hmac.new(ERLYVIDEO_SECRET_KEY, session_base64, digestmod=sha1).hexdigest()
     return '%s--%s' % (session_base64, session_signature)
+
+
+def select_server():
+    pass
