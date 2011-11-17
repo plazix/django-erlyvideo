@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from hashlib import sha1
-import base64
-import hmac
-
-from django.utils import simplejson
+from erlyvideo import erlyvideo_session_string
 
 from djerlyvideo.conf.settings import ERLYVIDEO_SECRET_KEY
 from djerlyvideo.models import Server
@@ -13,22 +9,8 @@ from djerlyvideo.models import Server
 __docformat__ = "restructuredtext"
 
 
-def get_session_string(user, additional_data={}):
-    """
-    Формирует строку с данными сессии для erlyvideo
-
-    :param user: ``django.contrib.auth.models.User``
-    :param additional_data: дополнительные данные, которые необходимо передать erlyvideo
-    :return: строка с данными сессии
-    """
-
-    session = {
-        'user_id': user.id if user.is_authenticated() else None
-    }
-    session.update(additional_data)
-    session_base64 = base64.b64encode(simplejson.dumps(session))
-    session_signature = hmac.new(ERLYVIDEO_SECRET_KEY, session_base64, digestmod=sha1).hexdigest()
-    return '%s--%s' % (session_base64, session_signature)
+def get_session_string(user_id, additional_data={}):
+    return erlyvideo_session_string(ERLYVIDEO_SECRET_KEY, user_id, additional_data)
 
 
 def select_server():
