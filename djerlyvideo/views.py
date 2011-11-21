@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from djerlyvideo.conf.settings import ERLYVIDEO_PUBLISH_AUTH_FUNC, ERLYVIDEO_PLAY_AUTH_FUNC
 from djerlyvideo.decorators import test_access
+from djerlyvideo.models import Server
 from djerlyvideo.signals import server_event, publish_auth as _publish_auth, play_auth as _play_auth
 
 
@@ -55,7 +56,13 @@ def event_handlers(request):
     json_str = request.POST.self.keys()[0]
     event_info = ErlyvideoEvent.load_from_json(json_str)
 
-    server_event.send(sender=ErlyvideoEvent, server=None, event_info=event_info)
+    try:
+        server = Server.objects.get(host=event_info.host)
+    except Server.DoesNotExist:
+        logger.warning('Erlyvideo server %s not found.' % event_info.host)
+        return HttpResponseForbidden()
+
+    server_event.send(sender=ErlyvideoEvent, server=server, event_info=event_info)
     
     return HttpResponse()
 
@@ -66,10 +73,17 @@ def publish_auth(request):
     """
     Авторизация при побликации потока
     """
+    server_host = request.META['SERVER_NAME']
+    try:
+        server = Server.objects.get(host=server_host)
+    except Server.DoesNotExist:
+        logger.warning('Erlyvideo server %s not found.' % server_host)
+        return HttpResponseForbidden()
+
     func = get_callable(ERLYVIDEO_PUBLISH_AUTH_FUNC)
-    if func(None, request.GET['ip'], request.GET['file'], request.GET['user_id'], request.GET['session_id']):
-        _publish_auth.send(sender=User, server=None, ip=request.GET['ip'], file=request.GET['file'], user_id=request.GET['user_id'],
-            session_id=request.GET['session_id'])
+    if func(server, request.GET['ip'], request.GET['file'], request.GET['user_id'], request.GET['session_id']):
+        _publish_auth.send(sender=User, server=None, ip=request.GET['ip'], file=request.GET['file'],
+                           user_id=request.GET['user_id'], session_id=request.GET['session_id'])
         return HttpResponse()
     else:
         return HttpResponseForbidden()
@@ -81,10 +95,17 @@ def play_auth(request):
     """
     Авторизация при проигрывании потока
     """
+    server_host = request.META['SERVER_NAME']
+    try:
+        server = Server.objects.get(host=server_host)
+    except Server.DoesNotExist:
+        logger.warning('Erlyvideo server %s not found.' % server_host)
+        return HttpResponseForbidden()
+
     func = get_callable(ERLYVIDEO_PLAY_AUTH_FUNC)
-    if func(None, request.GET['ip'], request.GET['file'], request.GET['user_id'], request.GET['session_id']):
-        _play_auth.send(sender=User, server=None, ip=request.GET['ip'], file=request.GET['file'], user_id=request.GET['user_id'],
-            session_id=request.GET['session_id'])
+    if func(server, request.GET['ip'], request.GET['file'], request.GET['user_id'], request.GET['session_id']):
+        _play_auth.send(sender=User, server=None, ip=request.GET['ip'], file=request.GET['file'],
+                        user_id=request.GET['user_id'], session_id=request.GET['session_id'])
         return HttpResponse()
     else:
         return HttpResponseForbidden()

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -39,8 +40,43 @@ class Server(models.Model):
 
     class Meta:
         verbose_name = u'Сервер Erlyvideo'
-        server_name_plural = u'Сервера Erlyvideo'
+        verbose_name_plural = u'Сервера Erlyvideo'
+
+    def __unicode__(self):
+        return '%s:%s' % (self.host, self.rtmp_port)
 
     def admin_connections(self):
         return '%s / %s' % (self.connections, self.max_connections)
     admin_connections.short_description = u'Соединений'
+
+
+class SessionManager(models.Manager):
+    pass
+
+
+class Session(models.Model):
+    TYPE_BROADCAST = 'broadcast'
+    TYPE_PLAY = 'play'
+
+    TYPE_CHOICES = (
+        ('broadcast', TYPE_BROADCAST),
+        ('play', TYPE_PLAY),
+    )
+
+    server = models.ForeignKey(Server, related_name='sessions')
+    user = models.ForeignKey(User, blank=True, null=True, default=None, related_name='erlyvideo_sessions')
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    stream = models.CharField(max_length=50, db_index=True)
+    stream_name = models.CharField(max_length=255, db_index=True)
+    start_at = models.DateTimeField(auto_now_add=True)
+    finish_at = models.DateTimeField(null=True, blank=True, default=None)
+
+    objects = SessionManager()
+
+    class Meta:
+        ordering = ('-start_at',)
+        verbose_name = 'Session'
+        verbose_name_plural = 'Sessions'
+
+    def __unicode__(self):
+        return '%s-%s' % (self.stream, self.stream_name)

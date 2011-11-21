@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from djerlyvideo.models import Server
+from djerlyvideo.models import Server, Session
 
 
 class ServerAdmin(admin.ModelAdmin):
@@ -21,5 +21,11 @@ class ServerAdmin(admin.ModelAdmin):
             'fields': ('api_port', 'api_user', 'api_password'),
         }),
     )
-
 admin.site.register(Server, ServerAdmin)
+
+
+class SessionAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__', 'server', 'user', 'type', 'start_at', 'finish_at')
+    list_filter = ('server', 'type')
+    date_hierarchy = 'start_at'
+admin.site.register(Session, SessionAdmin)
