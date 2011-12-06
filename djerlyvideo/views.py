@@ -51,6 +51,9 @@ def play_auth_sample(server, ip, file, user_id, session_id):
 @csrf_exempt
 @test_access
 def event_handlers(request):
+    """
+    Принимает и обрабатывает информацию о событии от сервера Erlyvideo
+    """
     logger.debug("%s" % request.POST)
 
     json_str = request.POST.self.keys()[0]

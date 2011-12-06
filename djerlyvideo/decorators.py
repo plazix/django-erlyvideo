@@ -15,6 +15,9 @@ __SERVER_IPS = []
 
 
 def test_access(f):
+    """
+    Проверяет, имеет ли право сервер отправить нам информацию о событии.
+    """
     @functools.wraps(f)
     def wrapper(request, *args, **kw):
         global __SERVER_IPS

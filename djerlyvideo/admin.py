@@ -7,7 +7,7 @@ from djerlyvideo.models import Server, Session
 
 class ServerAdmin(admin.ModelAdmin):
     list_display = ('name', 'host', 'group', 'admin_connections', 'last_success_ping', 'is_broken', 'is_active')
-    list_filter = ('group')
+    list_filter = ('group',)
     search_fields = ('name', 'host', 'group')
 
     fieldsets = (

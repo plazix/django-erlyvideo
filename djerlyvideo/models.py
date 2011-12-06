@@ -7,13 +7,15 @@ from django.db import models
 class ServerManager(models.Manager):
     def active(self):
         """
-        Активные сервера
+        Активные сервера.
+
+        Делает выборку по активным серверам (статус устанавливается через админку) исключая неотвечающие.
         """
         return self.filter(is_active=True, is_broken=False)
 
     def find_server(self, group=None):
         """
-        Поиск менее жагруженного сервера
+        Поиск менее загруженного сервера.
         """
         queryset = self.order_by('-connections')
         if group:
@@ -22,6 +24,9 @@ class ServerManager(models.Manager):
 
 
 class Server(models.Model):
+    """
+    Информация о сервере Erlyvideo.
+    """
     name = models.CharField(u'Имя сервера', max_length=255)
     host = models.CharField(u'Хост', max_length=255)
     rtmp_port = models.CharField(u'RTMP порт', max_length=5, default='1935')
@@ -51,10 +56,14 @@ class Server(models.Model):
 
 
 class SessionManager(models.Manager):
-    pass
+    def get_active(self):
+        return self.filter(finish_at=None)
 
 
 class Session(models.Model):
+    """
+    Сессии вещания и просмотра.
+    """
     TYPE_BROADCAST = 'broadcast'
     TYPE_PLAY = 'play'
 
